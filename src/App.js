@@ -1,28 +1,24 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import 'reset-css';
+import '../node_modules/antd/dist/antd.css';
+import { BrowserRouter} from 'react-router-dom';
+import Routers from './routers';
+import { Provider } from 'react-redux'
+import { loadStyle } from './utils/util'
+import store from './store/index'
+
+loadStyle('//at.alicdn.com/t/font_910901_40mkrc1mh1g.css')
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <Provider store={store}>
+                <BrowserRouter>
+                    <Routers />
+                </BrowserRouter>
+            </Provider>
+        );
+    }
 }
 
 export default App;
