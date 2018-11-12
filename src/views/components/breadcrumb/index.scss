@@ -1,0 +1,17 @@
+.MyBreadcrumb_wrap {
+    height: 40px;
+    line-height: 40px;
+    background: rgb(240, 240, 242);
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .ant-breadcrumb {
+        height: 40px;
+        line-height: 40px;
+        text-indent: 1em;
+    }
+    .ant-btn {
+        margin-right: 30px;
+    }
+}

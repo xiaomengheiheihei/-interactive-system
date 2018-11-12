@@ -1,0 +1,9 @@
+.retrieval-wrap {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px 0 0 20px;
+    .ant-input-search {
+        margin: 0 20px;
+    }
+}

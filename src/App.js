@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import { loadStyle } from './utils/util'
 import store from './store/index'
 
-loadStyle('//at.alicdn.com/t/font_910901_40mkrc1mh1g.css')
+loadStyle('//at.alicdn.com/t/font_910901_5czi85akjq.css')
 
 class App extends Component {
     render() {

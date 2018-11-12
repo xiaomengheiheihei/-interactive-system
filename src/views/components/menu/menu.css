@@ -1,5 +1,11 @@
 .menu-wrap {
     width: 100%;
+    min-height: 100vh;
+    height: 100%;
+}
+.menu-wrap .ant-menu-inline {
+    min-height: 100vh;
+    height: 100%;
 }
 .menu-wrap .ant-menu-sub.ant-menu-inline > .ant-menu-item {
     text-indent: 1.5em;

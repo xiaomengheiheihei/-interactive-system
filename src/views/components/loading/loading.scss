@@ -1,0 +1,17 @@
+.Loading_wrap{
+    height:100%;
+    .ant-spin-text{
+        letter-spacing:3px;
+        color: #495060;
+    }
+    .ant-spin-dot i{
+        background-color: #495060;
+    }
+    .ant-spin-blur{
+        opacity:0;
+    }
+    .ant-spin-spinning{
+        max-height: 100% !important;
+        background-color: #fff;
+    }
+}

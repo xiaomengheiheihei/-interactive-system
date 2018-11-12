@@ -1,0 +1,84 @@
+
+.home_content_wrap {
+    position: relative;
+    .section1 {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background: #fff;
+        border: 1px solid #ccc;
+        margin: 3px 5px;
+        height: 160px;
+        h3 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .item-colo-1 {
+            color: rgb(69, 88, 177);
+        }
+        .item-colo-2 {
+            color: rgb(177, 95, 92);
+        }
+        .item-colo-3 {
+            color: rgb(151, 192, 92);
+        }
+        span {
+            padding: 15px 40px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            min-width: 150px;
+            display: inline-block;
+            text-align: center;
+        }
+    }
+    .section2 {
+        background: #fff;
+        // border: 1px solid #ccc;
+        margin: 3px 5px;
+        .ant-list-bordered{
+            .ant-list-footer {
+                text-align: right;
+            }
+        }
+        .ant-list-item {
+            .ant-list-item-extra-wrap {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+            }
+        }
+    }
+    .section3 {
+        display: flex;
+        margin: 3px 5px;
+        background: #fff;
+        border: 1px solid #ccc;
+        justify-content: space-between;
+        padding: 10px 30px;
+        .step-01 {
+            // border: 1px solid #ccc;
+            background: #fff;
+            padding: 10px 20px;
+            .ant-radio-wrapper {
+                display: block;
+            }
+        }
+        .step-02 {
+            // border: 1px solid #ccc;
+            background: #fff;
+            padding: 10px 20px;
+            .img-wrap {
+                display: inline-block;
+                margin-right: 20px;
+                padding: 10px 20px;
+                border: 1px solid #ccc;
+                vertical-align: middle;
+                i {
+                    font-size: 30px;
+                    color: #ccc;
+                }
+            }
+        }
+    }
+}

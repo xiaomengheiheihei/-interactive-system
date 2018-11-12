@@ -4,11 +4,13 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Spin } from 'antd'
 import * as ROOT_action from '../../../store/root/action'
+import './loading.scss'
 
 class Loading extends Component {
     componentDidUpdate() {
         if (this.props.ROOT_loading) {
             this.props.ROOT_DelayLoading()
+            console.log(this.props.children)
         }
     }
     componentWillReceiveProps(nextProps) {
