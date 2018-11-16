@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Route, Switch, withRouter} from 'react-router-dom';
+import {Route, Switch, Redirect, withRouter} from 'react-router-dom';
 import IndexBox from '../views/index';
 import Login from '../views/login';
 import Cookies from 'js-cookie';
@@ -38,8 +38,9 @@ class Routers extends Component {
     render () {
         return (
             <Switch>
-                <Route path="/login" component={Login}/>
+                <Route path="/login" component={Login} exact/>
                 <Route path='/' component={IndexBox}/>
+                <Redirect to="/" />
             </Switch>
         )
     }

@@ -1,0 +1,29 @@
+.message-detail-list {
+    .deleting {
+        margin: 0 0 20px 10px;
+    }
+    .option-btn-wrap {
+        p {
+            color: #ccc;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .ant-btn {
+            margin-right: 20px;
+        }
+    }
+    .msgImg-wrap {
+        img {
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        p {
+            color: #ccc;
+            font-size: 12px;
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+    }
+}

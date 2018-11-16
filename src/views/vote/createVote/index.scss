@@ -1,0 +1,52 @@
+.create-like-wrap {
+    margin: 10px 10px 0 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    // min-height: 90vh;
+    .create-like-top {
+        margin-bottom: 40px;
+        .item {
+            margin-bottom: 30px;
+            >i {
+                color: red;
+                display: inline-block;
+                margin-right: 5px;
+                vertical-align: middle;
+            }
+            .add-likes {
+                margin-left: 80px;
+            }
+            .vote-num {
+               margin-left: 40px;
+            }
+        }
+    }
+    .set-likes {
+        margin-right: 20px;
+    }
+    .submit-btn {
+        margin-right: 40px;
+    }
+    .ant-table-wrapper {
+        margin-bottom: 100px;
+    }
+    .modal-wrap {
+        .ant-modal-body {
+            padding: 40px;
+            span {
+                color: red;
+                font-size: 12px;
+                display: inline-block;
+                vertical-align: middle;
+                margin-left: 20px;
+            }
+        }
+        .ant-modal-footer {
+            text-align: center;
+            .ant-btn {
+                margin: 0 10px;
+            }
+        }
+    }
+}

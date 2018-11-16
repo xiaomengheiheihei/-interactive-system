@@ -35,7 +35,7 @@ class IndedContent extends Component {
     render () {
         return (
             <div className="home_content_wrap">
-                <Breadcrumb title='首页' />
+                <Breadcrumb title={['首页']} />
                 <section className="section1">
                     <div className="section1-item">
                         <h3 className="item-colo-1">粉丝总数</h3>

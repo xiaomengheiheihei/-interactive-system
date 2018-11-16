@@ -4,14 +4,21 @@ import { Breadcrumb, Button } from 'antd'
 
 
 class MyBreadcrumb extends Component {
+
+    createMessgeStart = () => {
+        this.props.isCreateMessgeStart(true)
+    }
+
     render () {
         return (
             <div className='MyBreadcrumb_wrap'>
                 <Breadcrumb>
-                    <Breadcrumb.Item>{this.props.title}</Breadcrumb.Item>
+                    {this.props.title.map((item, i) => 
+                        <Breadcrumb.Item key={i}>{item}</Breadcrumb.Item>
+                    )}
                 </Breadcrumb>
                 {
-                    this.props.btn && <Button>{this.props.btn}</Button>
+                    this.props.btn && <Button onClick={this.createMessgeStart}>{this.props.btn}</Button>
                 }
             </div>
         )

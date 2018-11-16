@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
 import { Table } from 'antd'
 
+const pagination = {
+    showQuickJumper: true,
+    showSizeChanger: true
+}
+
 class MyList extends Component {
     state = {
         selectedRowKeys: [], // Check here to configure the default column
     };
-
 
     onSelectChange = (selectedRowKeys) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -21,8 +25,9 @@ class MyList extends Component {
             <div className="my-list-wrap">
                 <Table 
                     rowSelection={rowSelection} 
-                    columns={this.props.columns} 
-                    rowKey={record => record.marking}
+                    columns={this.props.columns}
+                    pagination={pagination} 
+                    rowKey={record => record.name}
                     dataSource={this.props.data} 
                 />
             </div>

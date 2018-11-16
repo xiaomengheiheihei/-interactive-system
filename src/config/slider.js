@@ -19,10 +19,10 @@ export default
     key   : '/answerManage',
     title : '答题管理',
     icon  : '639',
-    list  : [{
-        key   : '/addAnswer',
-        title : '新建答题'
-    }]
+    // list  : [{
+    //     key   : '/addAnswer',
+    //     title : '新建答题'
+    // }]
 }, {
     key   : '/questionnaireManage',
     title : '问卷调查',
@@ -35,19 +35,19 @@ export default
     key   : '/imageAndText',
     title : '图文播报',
     icon  : 'tuwen',
-    list  : [{
-        key   : '/imgConfig',
-        title : '图片管理'
-    }, {
-        key   : '/articleConfig',
-        title : '文章管理'
-    }]
+    // list  : [{
+    //     key   : '/imgConfig',
+    //     title : '图片管理'
+    // }, {
+    //     key   : '/articleConfig',
+    //     title : '文章管理'
+    // }]
 }, {
     key   : '/systemManage',
     title : '系统设置',
     icon  : 'xitong',
-    list  : [{
-        key   : '/privacyConfig',
-        title : '隐私设置'
-    }]
+    // list  : [{
+    //     key   : '/privacyConfig',
+    //     title : '隐私设置'
+    // }]
 }]

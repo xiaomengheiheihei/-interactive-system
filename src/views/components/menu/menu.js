@@ -13,6 +13,11 @@ class MyMenu extends Component {
     }
     selectKey = () =>{
         let keys = []
+        if ((menuConfig.find(i => i.key === this.props.history.location.pathname)) === undefined) {
+            keys.push('/' + this.props.history.location.pathname.split('/')[1])
+            this.setState({keys:keys})
+            return
+        }
         keys.push(this.props.history.location.pathname)
         this.setState({keys:keys})
     }

@@ -10,7 +10,6 @@ class Loading extends Component {
     componentDidUpdate() {
         if (this.props.ROOT_loading) {
             this.props.ROOT_DelayLoading()
-            console.log(this.props.children)
         }
     }
     componentWillReceiveProps(nextProps) {

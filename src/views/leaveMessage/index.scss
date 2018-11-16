@@ -1,0 +1,31 @@
+.leave-message-wrap {
+    .create-item {
+        margin: 20px 0;
+        span {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        >i {
+            min-width: 10px;
+            color: red;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    .switch-wrap {
+        text-align: center;
+        .ant-divider {
+            margin: 0 30px;
+        }
+    }
+    .ant-modal-footer {
+        text-align: center;
+        .ant-btn {
+            margin-right: 20px;
+        }
+    }
+    .deleting {
+        margin-bottom: 20px;
+        margin-left: 10px;
+    }
+}

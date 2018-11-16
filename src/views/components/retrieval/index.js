@@ -21,13 +21,29 @@ class Retrieval extends Component {
     render () {
         return (
             <div className="retrieval-wrap">
-                <Select defaultValue="lucy" style={{ width: 120 }} onChange={handleChange}>
+                <Select defaultValue="all" style={{ width: 120, marginRight: 20 }} onChange={handleChange}>
                     {this.renderOptions()}
                 </Select>
+                {
+                    this.props.option1 && 
+                    <Select defaultValue="default" style={{ width: 120, marginRight: '20px' }} onChange={handleChange}>
+                        {this.props.option1.map((v, i) => 
+                            <Option key={v.key} value={v.key}>{v.name}</Option>
+                        )}
+                    </Select>
+                }
+                {
+                    this.props.option2 && 
+                    <Select defaultValue="init" style={{ width: 120 }} onChange={handleChange}>
+                        {this.props.option2.map((v, i) => 
+                            <Option key={v.key} value={v.key}>{v.name}</Option>
+                        )}
+                    </Select>
+                }
                 <Search
-                    placeholder="节目名称"
+                    placeholder={this.props.searchPlaceholder}
                     onSearch={value => console.log(value)}
-                    style={{ width: 200 }}
+                    style={{ width: 260 }}
                 />
                 <Button>搜索</Button>
             </div>
