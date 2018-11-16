@@ -49,7 +49,7 @@ class CreateLuckDraw extends Component {
         return (
             <div>
                 <Breadcrumb 
-                    title={['点赞管理','新建点赞']} 
+                    title={['抽奖管理','新建抽奖']} 
                 />
                 <div className="create-like-wrap">
                     <div className="create-like-top">
@@ -86,7 +86,7 @@ class CreateLuckDraw extends Component {
                         </section>
                         <section className="item">
                             <i>*</i>
-                            <span>点赞形式：</span>
+                            <span>抽奖限制：</span>
                             <Select placeholder="请选择"
                                 style={{ width: 320 }} 
                                 onChange={this.handleChange}
@@ -95,7 +95,19 @@ class CreateLuckDraw extends Component {
                                     <Option key={v.key} value={v.key}>{v.name}</Option>
                                 )}
                             </Select>
-                            <Button className="add-likes" type="primary">添加一个点赞项</Button>
+                        </section>
+                        <section className="item">
+                            <i>*</i>
+                            <span>中奖限制：</span>
+                            <Select placeholder="请选择"
+                                style={{ width: 320 }} 
+                                onChange={this.handleChange}
+                            >
+                                {this.state.likesTypeOption.map((v, i) => 
+                                    <Option key={v.key} value={v.key}>{v.name}</Option>
+                                )}
+                            </Select>
+                            <Button className="add-likes" type="primary">添加一个抽奖项</Button>
                         </section>
                     </div>
                     <MyTable setLikes={bol => this.setLikes(bol)} />
@@ -128,20 +140,33 @@ function MyTable (props) {
             dataIndex: 'num'
         },
         {
-            title: '点赞列表',
+            title: '图片',
+            dataIndex: 'img',
+            render: (text) => (<img src={text} alt="" />)
+        },
+        {
+            title: '奖品名称',
             dataIndex: 'likesList'
         },
         {
-            title: '真实点赞数',
+            title: '奖品类型',
             dataIndex: 'reallNum'
         },
         {
-            title: '虚拟点赞数',
+            title: '奖品总数',
             dataIndex: 'vNum'
         },
         {
-            title: '总点赞数',
+            title: '每日发放数',
             dataIndex: 'allNum'
+        },
+        {
+            title: '剩余数',
+            dataIndex: 'saveNum'
+        },
+        {
+            title: '中奖概率',
+            dataIndex: 'gl'
         },
         {
             title: '操作',
@@ -149,7 +174,7 @@ function MyTable (props) {
             render: (record) => <div>
                 <Button className="set-likes" 
                     onClick={() => setLikes(record)} 
-                    type="primary">设置虚拟数
+                    type="primary">开启
                 </Button>
                 <Button type="danger">移除</Button>
             </div>
@@ -158,10 +183,13 @@ function MyTable (props) {
     const data = [
         {
             num: 1,
-            likesList: '春晚',
-            reallNum: 180,
+            img: '',
+            likesList: '大美女',
+            reallNum: '实物',
             vNum: 123455,
-            allNum: 2433545
+            allNum: 2433545,
+            saveNum: 2334,
+            gl: 10
         }
     ]
     function setLikes (record) {

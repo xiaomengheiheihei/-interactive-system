@@ -92,6 +92,27 @@ const CreateLuckDraw = Loadable({
     delay:300
 })
 
+// 图文播报
+const ImageAndText = Loadable({
+    loader: () => import('../views/imageAndText/index'), 
+    loading : DelayLoading,
+    delay:300
+})
+
+// 图文列表
+const ImageAndTextList = Loadable({
+    loader: () => import('../views/imageAndText/imageTextList/index'), 
+    loading : DelayLoading,
+    delay:300
+})
+
+// 系统设置
+const SystemSetting = Loadable({
+    loader: () => import('../views/system/index'), 
+    loading : DelayLoading,
+    delay:300
+})
+
 export default [
     {
         'path': '/index',
@@ -145,4 +166,16 @@ export default [
         'path': '/luckDrawManage/createLuckDraw',
         'component': CreateLuckDraw
     },
+    {
+        'path': '/imageAndText',
+        'component': ImageAndText
+    },
+    {
+        'path': '/imageAndText/imageAndTextList',
+        'component': ImageAndTextList
+    },
+    {
+        'path': '/systemManage',
+        'component': SystemSetting
+    }
 ]
