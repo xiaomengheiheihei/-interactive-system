@@ -1,7 +1,27 @@
 import React, { Component } from 'react'
-import { Divider } from 'antd'
+import { Divider, message } from 'antd'
+import http from '../../../../utils/http'
 
 class Logo extends Component {
+
+    state = {
+        title: ''
+    }
+
+    componentDidMount () {
+        http.get(`/channel/detail/${JSON.parse(localStorage.getItem('userInfo')).id}`, {})
+        .then(res => {
+            if (res.code === 200) {
+                this.setState({
+                    title: res.data.name
+                })
+            }
+        })
+        .catch(error => {
+            message.error(); 
+        })
+    }
+
     render () {
         const logoStyle = {
             float: 'left',
@@ -9,7 +29,7 @@ class Logo extends Component {
             fontSize: '18px'
         }
         return (
-            <div style={logoStyle}>七牛云<Divider type="vertical" /><span>中央电视台OJBK频道瞎鸡儿演</span></div>
+            <div style={logoStyle}>七牛云<Divider type="vertical" /><span>{this.state.title}</span></div>
         )
     }
 }

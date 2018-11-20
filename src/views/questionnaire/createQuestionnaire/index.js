@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './index.scss'
 import Breadcrumb from '../../components/breadcrumb/index.js'
-import { Select, Table, Button, Input, DatePicker,TimePicker, Modal } from 'antd'
+import { Select, Button, Input, DatePicker,TimePicker, Modal } from 'antd'
 import moment from 'moment';
 
 
@@ -129,55 +129,55 @@ class CreateLikes extends Component {
     }
 }
 
-function MyTable (props) {
-    const columns = [
-        {
-            title: '序号',
-            dataIndex: 'num'
-        },
-        {
-            title: '点赞列表',
-            dataIndex: 'likesList'
-        },
-        {
-            title: '真实点赞数',
-            dataIndex: 'reallNum'
-        },
-        {
-            title: '虚拟点赞数',
-            dataIndex: 'vNum'
-        },
-        {
-            title: '总点赞数',
-            dataIndex: 'allNum'
-        },
-        {
-            title: '操作',
-            dataIndex: '',
-            render: (record) => <div>
-                <Button className="set-likes" 
-                    onClick={() => setLikes(record)} 
-                    type="primary">设置虚拟数
-                </Button>
-                <Button type="danger">移除</Button>
-            </div>
-        }
-    ]
-    const data = [
-        {
-            num: 1,
-            likesList: '春晚',
-            reallNum: 180,
-            vNum: 123455,
-            allNum: 2433545
-        }
-    ]
-    function setLikes (record) {
-        props.setLikes(true);
-    }
-    return (
-        <Table columns={columns} dataSource={data} rowKey={record => record.num} /> 
-    )
-}
+// function MyTable (props) {
+//     const columns = [
+//         {
+//             title: '序号',
+//             dataIndex: 'num'
+//         },
+//         {
+//             title: '点赞列表',
+//             dataIndex: 'likesList'
+//         },
+//         {
+//             title: '真实点赞数',
+//             dataIndex: 'reallNum'
+//         },
+//         {
+//             title: '虚拟点赞数',
+//             dataIndex: 'vNum'
+//         },
+//         {
+//             title: '总点赞数',
+//             dataIndex: 'allNum'
+//         },
+//         {
+//             title: '操作',
+//             dataIndex: '',
+//             render: (record) => <div>
+//                 <Button className="set-likes" 
+//                     onClick={() => setLikes(record)} 
+//                     type="primary">设置虚拟数
+//                 </Button>
+//                 <Button type="danger">移除</Button>
+//             </div>
+//         }
+//     ]
+//     const data = [
+//         {
+//             num: 1,
+//             likesList: '春晚',
+//             reallNum: 180,
+//             vNum: 123455,
+//             allNum: 2433545
+//         }
+//     ]
+//     function setLikes (record) {
+//         props.setLikes(true);
+//     }
+//     return (
+//         <Table columns={columns} dataSource={data} rowKey={record => record.num} /> 
+//     )
+// }
 
 export default CreateLikes

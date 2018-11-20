@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import './index.scss'
 import Breadcrumb from '../../components/breadcrumb/index.js'
-import { Select, Table, Button, Input, DatePicker,TimePicker, Modal } from 'antd'
+import { Select, Table, Button, Input, DatePicker, Modal } from 'antd'
 import moment from 'moment';
+import locale from 'antd/lib/date-picker/locale/zh_CN';
 
-
+const { RangePicker } = DatePicker;
 const Option = Select.Option;
 
 class CreateLikes extends Component {
@@ -26,14 +27,16 @@ class CreateLikes extends Component {
     handleChange = (value) => {
         console.log(value)
     }
-    startTimeonChange = (date, dateString) => {
-        console.log(date, dateString);
-    }
-    startTimechangeTime = (time, timeString) => {
-        console.log(time, timeString);
-    }
     setLikesOk = (e) => {
         
+    }
+    selectDate = (value, dateString) => {
+        // this.setState((state, props) => {
+        //     return state.createProgramData.beginTime = dateString[0]
+        // })
+        // this.setState((state, props) => {
+        //     return state.createProgramData.endTime = dateString[1]
+        // })
     }
     setLikeCancel = (e) => {
         this.setState({
@@ -61,27 +64,27 @@ class CreateLikes extends Component {
                         <section className="item">
                             <i>*</i>
                             <span>开始时间：</span>
-                            <DatePicker style={{ width: 150, marginRight: 20 }} 
-                                onChange={this.startTimeonChange} 
-                                placeholder={'请选择开始日期'}
-                            />
-                            <TimePicker style={{ width: 150 }} 
-                                onChange={this.startTimechangeTime} 
-                                placeholder={'请选择开始时间'}
-                                defaultOpenValue={moment('00:00:00', 'HH:mm:ss')} 
+                            <RangePicker
+                                style={{width: 320, marginRight: 0}}
+                                locale={locale}
+                                onChange={this.selectDate}
+                                showTime={{
+                                    defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('12:00:00', 'HH:mm:ss')],
+                                }}
+                                format="YYYY-MM-DD HH:mm:ss"
                             />
                         </section>
                         <section className="item">
                             <i>*</i>
                             <span>结束时间：</span>
-                            <DatePicker style={{ width: 150, marginRight: 20 }} 
-                                onChange={this.startTimeonChange} 
-                                placeholder={'请选择开始日期'}
-                            />
-                            <TimePicker style={{ width: 150 }} 
-                                onChange={this.startTimechangeTime} 
-                                placeholder={'请选择开始时间'}
-                                defaultOpenValue={moment('00:00:00', 'HH:mm:ss')} 
+                            <RangePicker
+                                style={{width: 320, marginRight: 0}}
+                                locale={locale}
+                                onChange={this.selectDate}
+                                showTime={{
+                                    defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('12:00:00', 'HH:mm:ss')],
+                                }}
+                                format="YYYY-MM-DD HH:mm:ss"
                             />
                         </section>
                         <section className="item">

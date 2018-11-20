@@ -3,6 +3,9 @@ import { Menu } from 'antd';
 import { withRouter } from 'react-router-dom'
 import menuConfig from '../../../config/slider'
 import './menu.css'
+import * as ROOT_action from '../../../store/root/action'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux';
 
 
 const SubMenu = Menu.SubMenu;
@@ -34,7 +37,7 @@ class MyMenu extends Component {
     }
     render() {
         const menuIcon = {
-            marginRight: '20px'
+            marginRight: '30px'
         }
         const menuItem = {
             height: '50px',
@@ -42,7 +45,7 @@ class MyMenu extends Component {
         }
         return (
             <div className={'menu-wrap'}>
-                <Menu mode="inline" onSelect={this.onSelect} selectedKeys={this.state.keys}>
+                <Menu mode="inline" onSelect={this.onSelect} selectedKeys={this.state.keys} inlineCollapsed={this.props.ROOT_menuCollapsed}>
                     {  
                         menuConfig.map((item, i) => 
                             item.list && item.list.length > 0 ?
@@ -65,5 +68,10 @@ class MyMenu extends Component {
         )
     }
 }
+
+MyMenu = connect(
+    state => ({ ...state.ROOT }),
+    dispatch => bindActionCreators({...ROOT_action}, dispatch)
+) (MyMenu)
 
 export default withRouter(MyMenu)

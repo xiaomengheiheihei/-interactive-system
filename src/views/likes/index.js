@@ -4,7 +4,8 @@ import Breadcrumb from '../components/breadcrumb/index.js'
 import Retrieval from '../components/retrieval/index'
 import { withRouter } from 'react-router-dom'
 import MyList from '../components/list/index'
-import { Divider, Button } from 'antd'
+import { Divider, Button, message } from 'antd'
+import http from '../../utils/http'
 
 const option = [
     {
@@ -24,24 +25,13 @@ const option = [
         key: 'finish'
     }
 ]
-const data = [
-    {
-        marking: 'https://ps.ssl.qhmsg.com/t01ba00c77e08a37419.jpg',
-        name: '幸运67',
-        startTime: '2018-10-23',
-        endTime: '2017-11-22',
-        peopleNum: '12232324566',
-        duteyPerson: '李刚',
-        statuis: '0'
-    }
-]
 
 const btnStyle = {
     margin: '0 20px'
 }
 const imgStyle = {
-    width: '100px',
-    height: '100px',
+    width: '50px',
+    height: '50px',
     display: 'inline-block'
 }
 
@@ -50,25 +40,23 @@ class Likes extends Component {
         visible: false,
         columns: [{
             title: '节目标示',
-            dataIndex: 'marking',
+            dataIndex: 'program.iconUrl',
             render: (text) => <img style={imgStyle} src={text} alt="" />
         },{
             title: '节目名称',
-            dataIndex: 'name',
+            dataIndex: 'program.name',
         },{
             title: '开始时间',
-            dataIndex: 'startTime',
+            dataIndex: 'beginTime',
         },{
             title: '结束时间',
             dataIndex: 'endTime',
         },{
             title: '参与人数',
-            dataIndex: 'peopleNum',
-            width: 200
+            dataIndex: 'programId',
         },{
             title: '负责人',
-            dataIndex: 'duteyPerson',
-            width: 200
+            dataIndex: 'type',
         },{
             title: '操作',
             dataIndex: '',
@@ -93,11 +81,28 @@ class Likes extends Component {
                 key: 'timed',
             }
         ],
+        data: []
+    }
+    componentDidMount () {
+        this.getList()
     }
     isCreateMessgeStart (bol) {
         if (bol) {
             this.props.history.push(`/likesManage/createLikes`);
         }
+    }
+    getList () {
+        http.get(`/thumbsProgram/list`, {})
+        .then(res => {
+            if (res.code === 200) {
+                this.setState({data: res.data})
+            } else {
+                message.error(`获取列表信息失败，请稍后重试！`)
+            }
+        })
+        .catch(error => {
+            message.error(`网络连接失败，请稍后重试！`)
+        })
     }
     render () {
         return (
@@ -110,7 +115,7 @@ class Likes extends Component {
                 <Retrieval option={option} option2={this.state.option2} searchPlaceholder="项目名称"/>
                 <Divider />
                 <Button className="deleting">批量删除</Button>
-                <MyList columns={this.state.columns} data={data} />
+                <MyList columns={this.state.columns} data={this.state.data} />
             </div>
         )
     }

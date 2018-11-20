@@ -21,3 +21,15 @@ export const ROOT_ChangeUser = (userInfo) =>(
         ROOT_userInfo:userInfo
     }
 )
+
+/**
+ * 修改导航菜单大小
+ */
+export const ROOT_ChangeMenuCollapsed = (collapsed) => (
+    {
+        type: 'ROOT_MENUCOLLAPSED',
+        ROOT_menuCollapsed: collapsed
+    }
+)
+
+ 

@@ -3,7 +3,8 @@ import Breadcrumb from '../components/breadcrumb/index.js'
 import Retrieval from '../components/retrieval/index'
 import { withRouter } from 'react-router-dom'
 import MyList from '../components/list/index'
-import { Divider, Button, Modal, Select, Switch, DatePicker, TimePicker } from 'antd'
+import http from '../../utils/http'
+import { Divider, Button, Modal, Select, Switch, DatePicker, TimePicker, message } from 'antd'
 import moment from 'moment';
 import './index.scss'
 
@@ -28,10 +29,6 @@ const option = [
     }
 ]
 
-function onChange(date, dateString) {
-    console.log(date, dateString);
-  }
-
 const btnStyle = {
     margin: '0 20px'
 }
@@ -41,64 +38,123 @@ const imgStyle = {
     display: 'inline-block'
 }
 
-const data = [
-    {
-        marking: 'https://ps.ssl.qhmsg.com/t01ba00c77e08a37419.jpg',
-        name: '幸运67',
-        startTime: '2018-10-23',
-        endTime: '2017-11-22',
-        machineAudits: '1',
-        manualReview: '0',
-        statuis: '0'
-    }
-]
-
 class LeaveMessage extends Component {
     state = {
         visible: false,
         columns: [{
             title: '节目标示',
-            dataIndex: 'marking',
+            dataIndex: 'program.iconUrl',
             render: (text) => <img style={imgStyle} src={text} alt="" />
         },{
             title: '节目名称',
-            dataIndex: 'name',
+            dataIndex: 'program.name',
+            render: (text) => <p>{text}</p>
         },{
             title: '开始时间',
-            dataIndex: 'startTime',
+            dataIndex: 'beginTime',
         },{
             title: '结束时间',
             dataIndex: 'endTime',
         },{
             title: '是否机审',
-            dataIndex: 'machineAudits',
-            width: 200
+            dataIndex: 'mCheckFlag',
+            render: (text) => text === '1' ? '是' : '否'
         },{
             title: '是否人审',
-            dataIndex: 'manualReview',
-            width: 200
+            dataIndex: 'hCheckFlag',
+            render: (text) => text === '1' ? '是' : '否'
         },{
             title: '状态',
-            dataIndex: 'statuis',
-            width: 200
+            dataIndex: 'programId',
         },{
             title: '操作',
             dataIndex: '',
             key: 'op',
             render: (record) => <div>
                             <Button onClick={() => this.gotoDetail(record)}>查看</Button>
-                            <Button style={btnStyle} type="primary">编辑</Button>
-                            <Button type="danger">删除</Button>
+                            <Button onClick={() => this.gotoDetail(record)} style={btnStyle} type="primary">编辑</Button>
+                            <Button onClick={() => this.deleteMessage(record)} type="danger">删除</Button>
                         </div>
-        }]
+        }],
+        data: [],
+        programList: [],
+        startDate: '',
+        endDate: '',
+        startTime: '12:08:23',
+        endTime: '12:08:23',
+        params: {
+            beginTime: '',
+            endTime: '',
+            hCheckFlag: '1',
+            id: '',
+            mCheckFlag: '1',
+            programId: ''
+        }
+    }
+    componentDidMount () {
+        // 获取配置可留言节目列表
+        this.getList()
+        // 获取节目列表
+        http.get(`/program/list`, {})
+        .then(res => {
+            if (res.code === 200) {
+                this.setState({
+                    programList: res.data
+                })
+            } else {
+                message.error(res.message)
+            }
+        })
+        .catch(error => {
+            message.error(`网络连接失败，请稍后重试！`)
+        })
     }
     isCreateMessgeStart (bol) {
         this.setState({
             visible: bol
         })
     }
-    handleOk = () => {
-        alert('ok')
+    getList () {
+        http.get(`/messageProgram/list`, {})
+        .then(res => {
+            if (res.code === 200) {
+                this.setState({data: res.data})
+            } else {
+                message.error(res.message)
+            }
+        })
+        .catch(error => {
+            message.error(`网络链接失败，请稍后重试！`)
+        })
+    }
+    handleOk = () => {      // 新增配置留言
+        let params = new FormData()
+        for (let item of Object.keys(this.state.params)) {
+            if (item === 'beginTime') {
+                params.append('beginTime', this.state.startDate + ' ' + this.state.startTime)
+                continue;
+            }
+            if (item === 'endTime') {
+                params.append('endTime', this.state.endDate + ' ' + this.state.endTime)
+                continue;
+            }
+            params.append(item, this.state.params[item])
+        }
+        http.post(`/messageProgram/add`, params)
+        .then(res => {
+            if (res.code === 200) {
+                message.success('添加成功')
+                this.getList()
+                this.setState({
+                    visible: false
+                })
+            } else {
+                message.error(res.message)
+            }
+        })
+        .catch(error => {
+            message.error(`网络连接失败，请稍后重试！`)
+        })
     }
     handleCancel = () => {
         this.setState({
@@ -106,10 +162,42 @@ class LeaveMessage extends Component {
         })
     }
     changeProgram = (value) => {
-        
+        this.setState((state) => {state.params.programId = value})
+    }
+    startDateOnChange = (date, dateString) => {
+        this.setState({startDate: dateString})
+    }
+    startTimeOnchange = (date, dateString) => {
+        this.setState({startTime: dateString})
+    }
+    endDateOnChange = (date, dateString) => {
+        this.setState({endDate: dateString})
+    }
+    endTimeOnChange = (date, dateString) => {
+        this.setState({endTime: dateString})
+    }
+    changeSwitchH = (value) => {
+        this.setState((state) => {state.params.hCheckFlag = value})
+    }
+    changeSwitchM = (value) => {
+        this.setState((state) => {state.params.mCheckFlag = value})
     }
     gotoDetail =  (record) => {
-        this.props.history.push(`/messageManage/MessageDetailList?messageId=${record.name}`);
+        this.props.history.push(`/messageManage/MessageDetailList?messageId=${record.id}`);
+    }
+    deleteMessage = (record) => {
+        http.delete(`/messageProgram/delete`, {messageProgramId: record.id})
+        .then(res => {
+            if (res.code === 200) {
+                message.error(`删除成功！`)
+                this.getList()
+            } else {
+                message.error(res.message)
+            }
+        }) 
+        .catch(error => {
+            message.error(`网络连接失败，请稍后重试！`)
+        })
     }
     render () {
         return (
@@ -122,7 +210,7 @@ class LeaveMessage extends Component {
                 <Retrieval option={option} searchPlaceholder="节目名称"/>
                 <Divider />
                 <Button className="deleting">批量删除</Button>
-                <MyList columns={this.state.columns} data={data} />
+                <MyList columns={this.state.columns} data={this.state.data} />
                 <Modal
                     title="新建留言"
                     centered={true}
@@ -136,27 +224,32 @@ class LeaveMessage extends Component {
                     <div className="create-item">
                         <i></i>
                         <span>节目名称：</span>
-                        <Select size="small" defaultValue="lucy" style={{ width: 320 }} onChange={this.changeProgram}>
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
+                        <Select size="small" placeholder="请选择" style={{ width: 320 }} onChange={this.changeProgram}>
+                            {
+                                this.state.programList.map((item, i) => (
+                                    <Option key={item.id} value={item.id}>{item.name}</Option>
+                                ))
+                            }
                         </Select>
                     </div>
                     <div className="create-item">
                         <i>*</i>
                         <span>开始时间：</span>
-                        <DatePicker size="small" onChange={onChange} />
-                        <TimePicker defaultValue={moment('12:08:23', 'HH:mm:ss')} size="small" />
+                        <DatePicker style={{ width: 150 }} size="small" onChange={this.startDateOnChange} />
+                        <TimePicker style={{ width: 150 }} onChange={this.startTimeOnchange} defaultValue={moment('12:08:23', 'HH:mm:ss')} size="small" />
                     </div>
                     <div className="create-item">
                         <i>*</i>
                         <span>结束时间：</span>
+                        <DatePicker style={{ width: 150 }} size="small" onChange={this.endDateOnChange} />
+                        <TimePicker style={{ width: 150 }} onChange={this.endTimeOnChange} defaultValue={moment('12:08:23', 'HH:mm:ss')} size="small" />
                     </div>
                     <div className="create-item switch-wrap">
                         <span>是否机器审核：</span>
-                        <Switch size="small" defaultChecked />
+                        <Switch size="small" onChange={this.changeSwitch} defaultChecked={this.state.params.hCheckFlag === '1' ? true : false } />
                         <Divider type="vertical" />
                         <span>是否人员审核：</span>
-                        <Switch size="small" defaultChecked />
+                        <Switch size="small" onChange={this.changeSwitch}  defaultChecked={this.state.params.mCheckFlag === '1' ? true : false} />
                     </div>
                 </Modal>
             </div>

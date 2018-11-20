@@ -28,3 +28,8 @@ export const loadStyle = url => {
     const head = document.getElementsByTagName('head')[0]
     head.appendChild(link)
 }
+
+/**
+ * 
+ * 
+ */

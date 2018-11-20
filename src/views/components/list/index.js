@@ -27,7 +27,7 @@ class MyList extends Component {
                     rowSelection={rowSelection} 
                     columns={this.props.columns}
                     pagination={pagination} 
-                    rowKey={record => record.name}
+                    rowKey={record => record.id}
                     dataSource={this.props.data} 
                 />
             </div>

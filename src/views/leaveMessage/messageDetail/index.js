@@ -2,25 +2,14 @@ import React, { Component } from 'react'
 import Breadcrumb from '../../components/breadcrumb/index.js'
 import Retrieval from '../../components/retrieval/index'
 import MyList from '../../components/list/index'
+import { withRouter } from 'react-router-dom'
 import './index.scss'
-import { Button, Divider } from 'antd'
-
-const data = [
-    {
-        avatar: 'https://ps.ssl.qhmsg.com/t01ba00c77e08a37419.jpg',
-        name: '幸运67',
-        createTime: '2018-10-23 18:22:30',
-        text: '2017-11-22',
-        img: ['https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-705949.jpg',
-            'https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-708975.png',
-            'https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-706214.jpg'],
-        statuis: '0'
-    }
-]
+import { Button, Divider, message } from 'antd'
+import http from '../../../utils/http'
 
 const imgStyle = {
-    width: '100px',
-    height: '100px',
+    width: '50px',
+    height: '50px',
     display: 'inline-block'
 }
 
@@ -79,20 +68,20 @@ class MessageDetailList extends Component {
         ],
         columns: [{
             title: '用户头像',
-            dataIndex: 'avatar',
+            dataIndex: 'userPhoto',
             render: (text) => <img style={imgStyle} src={text} alt="" />
         },{
             title: '用户昵称',
-            dataIndex: 'name',
+            dataIndex: 'nickname',
         },{
             title: '留言时间',
             dataIndex: 'createTime',
         },{
             title: '留言文本',
-            dataIndex: 'text',
+            dataIndex: 'content',
         },{
             title: '留言图片',
-            dataIndex: 'img',
+            dataIndex: 'imageUrl',
             render:(text) => <div className="msgImg-wrap">
                 {text.map((item, i) => 
                     <img src={item} alt="" key={i} />
@@ -101,20 +90,55 @@ class MessageDetailList extends Component {
             </div>
         },{
             title: '状态',
-            dataIndex: 'statuis',
-            width: 200
+            dataIndex: 'status',
         },{
             title: '操作',
             dataIndex: '',
             key: 'op',
             render: (record) => <div className="option-btn-wrap">
-                            <Button type="primary">审核通过</Button>
-                            <Button type="danger">不通过</Button>
-                            <Button >回收</Button>
-                            <Button type="danger">删除</Button>
+                            <Button size="small" type="primary">审核通过</Button>
+                            <Button size="small" type="danger">不通过</Button>
+                            <Button size="small" >回收</Button>
+                            <Button size="small" onClick={() => this.deleteMessage(record)} type="danger">删除</Button>
                             <p>(回收后留言将不在前端显示)</p>
                         </div>
-        }]
+        }],
+        data: []
+    }
+
+    componentDidMount () {
+        this.getList()
+    }
+
+    getList () {
+        http.get('/messageItem/list', {messageProgramId: this.props.location.search.split('=')[1]})
+        .then(res => {
+            if (res.code === 200) {
+                this.setState({data: res.data})
+            } else {
+                message.error(res.message)
+            }
+        })
+        .catch(error => {
+            message.error('网络连接失败，请稍后重试！')
+        })
+    }
+
+    deleteMessage = (record) => {
+        let obj = {messageItemId: record.id}
+        http.delete('/messageItem/delete', obj)
+        .then(res => {
+            if (res.code === 200) {
+                this.setState({data: res.data})
+                message.success('删除成功！')
+                this.getList()
+            } else {
+                message.error(res.message)
+            }
+        })
+        .catch(error => {
+            message.error('网络连接失败，请稍后重试！')
+        })
     }
     
     render () {
@@ -132,10 +156,10 @@ class MessageDetailList extends Component {
                 />
                 <Divider />
                 <Button className="deleting">批量删除</Button>
-                <MyList columns={this.state.columns} data={data} />
+                <MyList columns={this.state.columns} data={this.state.data} />
             </div>
         )
     }
 }
 
-export default MessageDetailList
+export default withRouter(MessageDetailList)
