@@ -4,7 +4,8 @@ import Breadcrumb from '../components/breadcrumb/index.js'
 import Retrieval from '../components/retrieval/index'
 import { withRouter } from 'react-router-dom'
 import MyList from '../components/list/index'
-import { Divider, Button } from 'antd'
+import { Divider, Button, message } from 'antd'
+import http from '../../utils/http'
 
 const option = [
     {
@@ -99,11 +100,30 @@ class Answer extends Component {
             }
         ],
     }
+    componentDidMount () {
+        this.getList()
+    }
     isCreateMessgeStart (bol) {
         if (bol) {
             this.props.history.push(`/answerManage/createAnswer`);
         }
     }
+    gotoDetail = (record) => {
+
+    }
+    getList (current=1, size=10) {
+        http.get(`/answerProgram/list`, current: current, size: size)
+        .then(res => {
+            if (res.code === 200) {
+
+            } else {
+                message.error(res.message)
+            }
+        })
+        .catch(error => {
+            message.error('网络连接失败，请稍后重试！')
+        })
+    } 
     render () {
         return (
             <div className="answer-wrap">
