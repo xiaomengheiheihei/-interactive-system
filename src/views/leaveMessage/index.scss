@@ -28,4 +28,18 @@
         margin-bottom: 20px;
         margin-left: 10px;
     }
+    .ant-modal-body {
+        .ant-spin-nested-loading {
+            background: transparent;
+            .ant-spin-spinning {
+                background: transparent;
+                i {
+                   background-color: #1890ff;
+                }
+            }
+            .ant-spin-blur {
+                opacity: .5;
+            }
+        }
+    }
 }

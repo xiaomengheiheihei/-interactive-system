@@ -3,14 +3,12 @@ import Breadcrumb from '../components/breadcrumb/index.js'
 import Retrieval from '../components/retrieval/index'
 import { withRouter } from 'react-router-dom'
 import MyList from '../components/list/index'
-import { Divider, Button, Modal, Input, DatePicker, message, Upload, Icon } from 'antd'
+import { Divider, Button, Modal, Input, Spin, TimePicker, message, Upload, Icon, Select } from 'antd'
 import moment from 'moment';
 import http from '../../utils/http'
-import locale from 'antd/lib/date-picker/locale/zh_CN';
 import '../leaveMessage/index.scss'
 
-
-const { RangePicker } = DatePicker;
+const Option = Select.Option;
 
 const option = [
     {
@@ -39,6 +37,38 @@ const imgStyle = {
     height: '50px',
     display: 'inline-block'
 }
+
+const week = [
+    {
+        key: '1',
+        value: '周一'
+    },
+    {
+
+        key: '2',
+        value: '周二'
+    },
+    {
+        key: '3',
+        value: '周三'
+    },
+    {
+        key: '4',
+        value: '周四'
+    },
+    {
+        key: '5',
+        value: '周五'
+    },
+    {
+        key: '6',
+        value: '周六'
+    },
+    {
+        key: '7',
+        value: '周日'
+    }
+]
 
 class SystemSetting extends Component {
     state = {
@@ -74,22 +104,24 @@ class SystemSetting extends Component {
             endTime: '',
             iconUrl: '',
             name: '',
+            dayOfWeek: ''
         },
         uploadData: {
             name: 'file',
             action: '/upload',
             accept: 'image/jpeg, image/png, image/jpg',
             showUploadList: false
-        }
+        },
+        loading: false
     }
     componentDidMount () {
         this.getList()
     }
     getList () {
-        http.get(`/program/list`, {})
+        http.get(`/program/list`, {current: 1, size: 10})
         .then(res => {
             if (res.code === 200) {
-                this.setState({data: res.data})
+                this.setState({data: res.data.rows})
             } else {
                 message.error(res.message)
             }
@@ -146,28 +178,52 @@ class SystemSetting extends Component {
     gotoDetail =  (record) => {
         this.props.history.push(`/messageManage/MessageDetailList?messageId=${record.name}`);
     }
-    selectDate = (value, dateString) => {
-        this.setState((state, props) => {
-            return state.createProgramData.beginTime = dateString[0]
-        })
-        this.setState((state, props) => {
-            return state.createProgramData.endTime = dateString[1]
-        })
-    }
+    // selectDate = (value, dateString) => {
+    //     this.setState((state, props) => {
+    //         return state.createProgramData.beginTime = dateString[0]
+    //     })
+    //     this.setState((state, props) => {
+    //         return state.createProgramData.endTime = dateString[1]
+    //     })
+    // }
     uploadonChange = (info) => {
+        this.setState({
+            loading: true
+        })
         if (info.file.status === 'done') {
             message.success(`${info.file.name} 图片上传成功！`);
             this.setState((state, props) => {
                 return state.createProgramData.iconUrl = info.file.response.data;
             })
+            this.setState({
+                loading: false
+            })
         } else if (info.file.status === 'error') {
             message.error(`${info.file.name} 图片上传失败!`);
+            this.setState({
+                loading: false
+            })
         }
     }
     getName = (e) => {
         const { value } = e.target;
         this.setState((state, props) => {
             return state.createProgramData.name = value
+        })
+    }
+    onChangeValue1 = (time, timeString) => {
+        this.setState((state, props) => {
+            state.createProgramData.beginTime = timeString
+       })
+    }
+    onChangeValue2 = (time, timeString) => {
+        this.setState((state, props) => {
+            state.createProgramData.endTime = timeString
+       })
+    }
+    changeWeek = (value) => {
+        this.setState((state, props) => {
+             state.createProgramData.dayOfWeek = value
         })
     }
     render () {
@@ -192,6 +248,7 @@ class SystemSetting extends Component {
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                 >
+                    <Spin spinning={this.state.loading}>
                     <div className="create-item">
                         <span>节目标识：</span>
                         <Upload {...this.state.uploadData} onChange={this.uploadonChange}>
@@ -206,16 +263,25 @@ class SystemSetting extends Component {
                     </div>
                     <div className="create-item">
                         <span>播出时间：</span>
-                        <RangePicker
-                            style={{width: '80%', marginRight: 0}}
-                            locale={locale}
-                            onChange={this.selectDate}
-                            showTime={{
-                                defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('12:00:00', 'HH:mm:ss')],
-                            }}
-                            format="YYYY-MM-DD HH:mm:ss"
+                        <Select defaultValue="1" style={{ width: 90, marginRight: 20 }} onChange={this.changeWeek}>
+                            {
+                                week.map((item, i) => 
+                                    <Option key={item.key} value={item.key}>{item.value}</Option>
+                                )
+                            }
+                        </Select>
+                        <TimePicker 
+                            style={{ width: 120 }}
+                            defaultValue={moment('12:00:00', 'HH:mm:ss')} 
+                            onChange={this.onChangeValue1} 
+                        />
+                        <TimePicker 
+                            style={{ width: 120, marginRight: 0 }}
+                            defaultValue={moment('20:00:00', 'HH:mm:ss')} 
+                            onChange={this.onChangeValue2} 
                         />
                     </div>
+                    </Spin>
                 </Modal>
             </div>
         )

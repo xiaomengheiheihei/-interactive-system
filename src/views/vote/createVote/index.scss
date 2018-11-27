@@ -34,12 +34,33 @@
     .modal-wrap {
         .ant-modal-body {
             padding: 40px;
-            span {
-                color: red;
-                font-size: 12px;
-                display: inline-block;
-                vertical-align: middle;
-                margin-left: 20px;
+            .create-item {
+                margin-bottom: 20px;
+                >span {
+                    display: inline-block;
+                    min-width: 105px;
+                }
+                .tips {
+                    color: red;
+                    font-size: 12px;
+                    display: inline-block;
+                    vertical-align: middle;
+                    margin-top: 10px;
+                }
+            }
+        }
+        .ant-modal-body {
+            .ant-spin-nested-loading {
+                background: transparent;
+                .ant-spin-spinning {
+                    background: transparent;
+                    i {
+                       background-color: #1890ff;
+                    }
+                }
+                .ant-spin-blur {
+                    opacity: .5;
+                }
             }
         }
         .ant-modal-footer {

@@ -56,15 +56,15 @@ class Likes extends Component {
             dataIndex: 'programId',
         },{
             title: '负责人',
-            dataIndex: 'type',
+            dataIndex: 'userAccount',
         },{
             title: '操作',
             dataIndex: '',
             key: 'op',
             render: (record) => <div>
                             <Button onClick={() => this.gotoDetail(record)}>查看</Button>
-                            <Button style={btnStyle} type="primary">编辑</Button>
-                            <Button type="danger">删除</Button>
+                            <Button onClick={() => this.editItem(record)} style={btnStyle} type="primary">编辑</Button>
+                            <Button onClick={() => this.deleteLikes(record)} type="danger">删除</Button>
                         </div>
         }],
         option2: [
@@ -86,16 +86,36 @@ class Likes extends Component {
     componentDidMount () {
         this.getList()
     }
+    gotoDetail = (record) => {
+
+    }
+    editItem = (record) => {
+        
+    }
+    deleteLikes = (record) => {
+        http.delete(`/thumbsProgram/delete`, {thumbsProgramId: record.id})
+        .then(res => {
+            if (res.code === 200) {
+                message.success(`删除成功！`)
+                this.getList()
+            } else {
+                message.error(res.message)
+            }
+        })
+        .catch(error => {
+            message.error(`网络连接失败，请稍后重试！`)
+        })
+    }
     isCreateMessgeStart (bol) {
         if (bol) {
             this.props.history.push(`/likesManage/createLikes`);
         }
     }
-    getList () {
-        http.get(`/thumbsProgram/list`, {})
+    getList (current=1, size=10) {
+        http.get(`/thumbsProgram/list`, {current: current, size: size})
         .then(res => {
             if (res.code === 200) {
-                this.setState({data: res.data})
+                this.setState({data: res.data.rows})
             } else {
                 message.error(`获取列表信息失败，请稍后重试！`)
             }

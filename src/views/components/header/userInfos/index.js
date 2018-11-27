@@ -3,6 +3,7 @@ import userInfo from './userInfos.module.scss'
 import http from '../../../../utils/http'
 import { Drawer, message } from 'antd'
 import * as ROOT_action from '../../../../store/root/action'
+import * as PROGRAM_LIST_action from '../../../../store/progarmList/action'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 
@@ -16,12 +17,13 @@ class UserInfos extends Component {
     }
 
     componentDidMount () {
-        http.get(`/program/list`, {})
+        http.get(`/program/list`, {current: 1, size: 10})
         .then(res => {
             if (res.code === 200) {
                 this.setState({
-                    programList: res.data
+                    programList: res.data.rows
                 })
+                this.props.Program_changeProgramList(res.data.rows)
             }
         })
         .catch(error => {
@@ -81,6 +83,11 @@ class UserInfos extends Component {
 UserInfos = connect(
     state => ({ ...state.ROOT }),
     dispatch => bindActionCreators({...ROOT_action}, dispatch)
+) (UserInfos)
+
+UserInfos = connect(
+    state => ({ ...state.PROGRAM_LIST }),
+    dispatch => bindActionCreators({...PROGRAM_LIST_action}, dispatch)
 ) (UserInfos)
 
 export default UserInfos

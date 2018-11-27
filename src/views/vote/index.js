@@ -4,7 +4,8 @@ import Breadcrumb from '../components/breadcrumb/index.js'
 import Retrieval from '../components/retrieval/index'
 import { withRouter } from 'react-router-dom'
 import MyList from '../components/list/index'
-import { Divider, Button } from 'antd'
+import { Divider, Button, message } from 'antd'
+import http from '../../utils/http'
 
 const option = [
     {
@@ -24,18 +25,7 @@ const option = [
         key: 'finish'
     }
 ]
-const data = [
-    {
-        marking: 'https://ps.ssl.qhmsg.com/t01ba00c77e08a37419.jpg',
-        name: '幸运67',
-        startTime: '2018-10-23',
-        endTime: '2017-11-22',
-        peopleNum: '12232324566',
-        voteRule: '1票',
-        duteyPerson: '李刚',
-        statuis: '0'
-    }
-]
+
 
 const btnStyle = {
     margin: '0 20px'
@@ -51,37 +41,34 @@ class Vote extends Component {
         visible: false,
         columns: [{
             title: '节目标示',
-            dataIndex: 'marking',
+            dataIndex: 'program.iconUrl',
             render: (text) => <img style={imgStyle} src={text} alt="" />
         },{
             title: '节目名称',
-            dataIndex: 'name',
+            dataIndex: 'program.name',
         },{
             title: '开始时间',
-            dataIndex: 'startTime',
+            dataIndex: 'beginTime',
         },{
             title: '结束时间',
             dataIndex: 'endTime',
         },{
             title: '参与人数',
-            dataIndex: 'peopleNum',
-            width: 200
+            dataIndex: 'personNum',
         },{
             title: '投票规则',
-            dataIndex: 'voteRule',
-            width: 200
+            dataIndex: 'votesPerPerson',
         },{
             title: '负责人',
-            dataIndex: 'duteyPerson',
-            width: 200
+            dataIndex: 'userAccount',
         },{
             title: '操作',
             dataIndex: '',
             key: 'op',
             render: (record) => <div>
                             <Button onClick={() => this.gotoDetail(record)}>查看</Button>
-                            <Button style={btnStyle} type="primary">编辑</Button>
-                            <Button type="danger">删除</Button>
+                            <Button onClick={() => this.editItem(record)} style={btnStyle} type="primary">编辑</Button>
+                            <Button onClick={() => this.deleteItem(record)} type="danger">删除</Button>
                         </div>
         }],
         option2: [
@@ -98,11 +85,49 @@ class Vote extends Component {
                 key: 'timed',
             }
         ],
+        data: []
+    }
+
+    componentDidMount () {
+        this.getList()
+    }
+    getList (current=1, size=10) {
+        http.get('/voteProgram/list', {current: current, size: size})
+        .then(res => {
+            if (res.code === 200) {
+                this.setState({data: res.data.rows})
+            } else {
+                message.error(res.message)
+            }
+        })
+        .catch(error => {
+            message.error(`网络连接失败，请稍后重试！`)
+        })
     }
     isCreateMessgeStart (bol) {
         if (bol) {
             this.props.history.push(`/voteManage/createVote`);
         }
+    }
+    gotoDetail = (record) => {
+
+    }
+    editItem = (record) => {
+        
+    }
+    deleteItem = (record) => {
+        http.delete(`/voteProgram/delete`, {voteProgramId: record.id})
+        .then(res => {
+            if (res.code === 200) {
+                message.success('删除成功！')
+                this.getList()
+            } else {
+                message.error(res.message)
+            }
+        })
+        .catch(error => {
+            message.error('网络连接失败，请稍后重试！')
+        })
     }
     render () {
         return (
@@ -115,7 +140,7 @@ class Vote extends Component {
                 <Retrieval option={option} option2={this.state.option2} searchPlaceholder="项目名称"/>
                 <Divider />
                 <Button className="deleting">批量删除</Button>
-                <MyList columns={this.state.columns} data={data} />
+                <MyList columns={this.state.columns} data={this.state.data} />
             </div>
         )
     }

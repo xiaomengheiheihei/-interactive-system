@@ -95,11 +95,11 @@ class LeaveMessage extends Component {
         // 获取配置可留言节目列表
         this.getList()
         // 获取节目列表
-        http.get(`/program/list`, {})
+        http.get(`/program/list`, {current: 1, size: 10})
         .then(res => {
             if (res.code === 200) {
                 this.setState({
-                    programList: res.data
+                    programList: res.data.rows
                 })
             } else {
                 message.error(res.message)
@@ -115,10 +115,10 @@ class LeaveMessage extends Component {
         })
     }
     getList () {
-        http.get(`/messageProgram/list`, {})
+        http.get(`/messageProgram/list`, {current: 1, size: 10})
         .then(res => {
             if (res.code === 200) {
-                this.setState({data: res.data})
+                this.setState({data: res.data.rows})
             } else {
                 message.error(res.message)
             }
