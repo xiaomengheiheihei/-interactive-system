@@ -7,7 +7,12 @@ import * as PROGRAM_LIST_action from '../../../../store/progarmList/action'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 
-const username = JSON.parse(localStorage.getItem('userInfo')).name
+
+let username;
+if (!!JSON.parse(localStorage.getItem('userInfo'))) {
+    username = JSON.parse(localStorage.getItem('userInfo')).name
+}
+// const username = !!JSON.parse(localStorage.getItem('userInfo')).name || '';
 
 class UserInfos extends Component {
 

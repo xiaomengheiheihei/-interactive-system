@@ -112,7 +112,7 @@ class Answer extends Component {
 
     }
     getList (current=1, size=10) {
-        http.get(`/answerProgram/list`, current: current, size: size)
+        http.get(`/answerProgram/list`, {current: current, size: size})
         .then(res => {
             if (res.code === 200) {
 
